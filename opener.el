@@ -38,6 +38,13 @@
 (require 'evil)
 (eval-when-compile (require 'cl)) ;; lexical-let
 
+(defcustom opener-major-mode-hooks
+  '((nxml-mode (nxml-pretty-format)))
+  "List of 'major-mode' to list of functions to be executed.
+When opening a buffer that matches one of the modes, the functions are applied
+with the buffer being the current one.  This allows for e.g. pretty-printing."
+  :group 'opener)
+
 (defun opener-filename-for (url)
   "Convert a URL into a valid file-path.
 Seeing as one might open multiple URL-file buffers, it is useful to distinguish
@@ -48,8 +55,10 @@ them by more than their base-name"
   "Perform necessary hooks for the determined file-mode.
 Pretty printing is the usual example here, as most representations one the web
 occur in minified format, which is not particularly pleasent for humans."
-  (if (derived-mode-p 'nxml-mode)
-      (nxml-pretty-format)))
+  (dolist (mapping opener-major-mode-hooks)
+    (when (derived-mode-p (car mapping))
+      (dolist (func (cadr mapping))
+        (funcall func)))))
 
 (defun opener-http-response-in-buffer (buffer-name data)
   "Actually create a buffer named BUFFER-NAME and fill it with DATA.

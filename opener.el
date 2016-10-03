@@ -36,6 +36,7 @@
 ;;; Code:
 (require 'request)
 (require 'evil)
+(require 'ffap)
 (eval-when-compile (require 'cl)) ;; lexical-let
 
 (defcustom opener-major-mode-hooks
@@ -49,7 +50,12 @@ with the buffer being the current one.  This allows for e.g. pretty-printing."
   "Convert a URL into a valid file-path.
 Seeing as one might open multiple URL-file buffers, it is useful to distinguish
 them by more than their base-name"
-  (replace-regexp-in-string "http[s]?://" "" url))
+  (replace-regexp-in-string "http[s]?://" "" (url-unhex-string url)))
+
+(defun opener-file-like-url (url)
+  "Report whether the URL seems like it corresponds to a normal file."
+  (let ((file-segment (car (last (split-string url "/")))))
+    (string-match-p (regexp-quote ".") file-segment)))
 
 (defun opener-perform-major-mode-hooks ()
   "Perform necessary hooks for the determined file-mode.
@@ -86,16 +92,44 @@ It also makes that buffer current."
                 (lambda (&key data &allow-other-keys)
                   (opener-http-response-in-buffer buffer-name data))))))
 
+(defun opener-supported-url-scheme-p (url)
+  "If URL is http or https, nil otherwise."
+  (or
+   (string-prefix-p "http://" url)
+   (string-prefix-p "https://" url)))
+
+(defun opener-try-open (url-or-file &optional bang callback)
+  "Try to open URL-OR-FILE appropriately.
+This means a file-like URL in a buffer, any other URL in a browser
+and a FILE as a normal file.
+When BANG non-nil, then actual URL is always opened in buffer.
+CALLBACK gets executed in the not-url case."
+  (if (opener-supported-url-scheme-p url-or-file)
+    (if (or bang (opener-file-like-url url-or-file))
+        (opener-open-url-in-buffer url-or-file)
+      (browse-url url-or-file))
+    (when callback
+      (funcall callback url-or-file))))
+
+;;;###autoload
 (evil-define-command opener-open (url-or-file &optional bang)
   "Open URL-OR-FILE. If the url doesn't have the scheme http:// or https:// it
   falls back to be equivalent to :edit"
   :repeat nil
-  (interactive "<f><!>")
-  (if (or
-       (string-prefix-p "http://" url-or-file)
-       (string-prefix-p "https://" url-or-file))
-      (opener-open-url-in-buffer url-or-file)
-    (evil-edit url-or-file bang)))
+  (interactive "<a><!>")
+  (opener-try-open url-or-file bang #'evil-edit))
+
+;;;###autoload
+(defun opener-open-at-point ()
+  "Opens URL or FILE at point."
+  (interactive)
+  (let ((url (ffap-url-at-point)))
+    (opener-try-open url nil (lambda (dontcare)
+                               (find-file-at-point)))))
+
+(define-key evil-normal-state-map "gf" 'opener-open-at-point)
 
 (evil-ex-define-cmd "o[pener]" 'opener-open)
+
+(provide 'opener)
 ;;; opener.el ends here

@@ -1,0 +1,211 @@
+\input texinfo @c -*-texinfo-*-
+@c %**start of header
+@setfilename opener.info
+@settitle opener.el Manual 0.1
+@c %**end of header
+
+@copying
+This manual is for opener.el version 0.1.
+
+Copyright @copyright{} 2016 Tim Reddehase
+
+@quotation
+All rights reserved. This manual must accompany the source code of the
+opener.el package.
+@end quotation
+@end copying
+
+@dircategory Emacs
+@direntry
+* opener.el: (opener.el). Seamlessly files via http(s) in buffer.
+@end direntry
+
+@titlepage
+@title opener.el Manual
+@author Tim Reddehase
+
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+
+@end titlepage
+
+@contents
+
+@ifnottex
+@node Top
+@top opener Manual
+
+This manual is for opener.el, version 0.1.
+@end ifnottex
+
+@menu
+* Overview::
+* Installing::
+* Using opener::
+@end menu
+
+@node Overview
+@chapter Overview
+
+Opener is a small package that hooks into @emph{evil} and makes it
+possible to open URLs directly in a buffer, instead of going the way
+of downloading the corresponding file with your browser and then
+opening that file manually. Users of @emph{vim} (which you most likely
+were, since you are using @emph{evil}) might be familar that behaviour
+already, since it is built into @emph{vim}.
+
+However opener doesn't just open any URL in buffer, only those that it
+determines correspond to a classic file. The simple reason for that
+is, that normal webpages aren't really intended to be read via
+source-code. Therefore those URLs are still opened in your favorite
+browser. For information on how to customize the workflow and how to
+force it to open in a buffer, see @ref{Using opener}.
+
+@node Installing
+@chapter Installing
+
+It is recommended to install opener.el via the MELPA package
+repository. However, it is still (as always) possible to do it by
+hand:
+
+To manually install opener.el, clone the git repository it into a
+location of your choice (usually within your @code{~/.emacs.d}) and
+add that location to your @code{load-path}.
+
+@section Installing from MELPA
+
+Follow these steps to install Octopress.el from the MELPA repository.
+
+@lisp
+(require 'package)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.org/packages/") t)
+@end lisp
+
+@noindent
+Then refresh your packages list:
+
+@example
+M-x package-refresh-contents RET
+@end example
+
+@noindent
+And finally, install opener.el:
+
+@example
+M-x package-install RET opener RET
+@end example
+
+@node Using opener
+@chapter Using opener
+
+Opener automatically hooks into @emph{evil-mode} and provides the
+@command{:opener} ex-state command. It basically acts the same way
+as the standard @emph{evil-mode} @command{:edit} ex-state command;
+meaning that it takes a @var{file} or (in this special case) a
+@var{URL} as argument. If you provide a normal path to a file, even if
+it is a @emph{TRAMP} specified path, it is opened the same way as you
+would expect it from the @command{:edit} command.
+
+If the argument however pertains to a URL in the http or https scheme,
+it will either open the corresponding HTTP-response in a buffer, if
+that URL seems to be corresponding to a classic file (@pxref{What is a classic file-URL?}).
+Otherwise it will open up a browser at that URL.
+
+Same as the standard @command{:edit} command the @command{:opener}
+command also accepts a bang. If @command{:opener!} gets executed the
+argument, if it is a URL in http or https scheme, is always opened in
+a buffer, no matter if it is a directory- or file-like URL. If it
+however is a FILE, the bang gets propagated to the underlying
+@command{:edit} command.
+
+
+While the @command{:opener} command doesn't override the normal
+@command{:edit} command — meaning that one still performs its normal
+operations — opener overrides another command: @command{gf} in
+normal-state. @command{gf} is usually seen as a mnemonic for @emph{go
+to file} and opens the filepath at point. However opener seamlessly
+hooks into that and allows you to open file-like URLs in a buffer as
+well, in any other URL-case it tries to open the URL at point in a
+browser and in any other case falls back to the default behaviour of
+finding the file at point.
+
+On a side-note: Opener automatically unzips the contents of the buffer
+with @emph{zlib}, if possible.
+
+@section Customizing opener to my needs
+
+Opener defines a small number of variables that can be used to
+customize the behaviour and make it feel as smooth as you like it to
+be.
+
+@subsection After buffer-load hooks
+
+In the web data is often minified, to save space and to reduce
+transfer-costs (usually time). A typical use-case would be therefore
+to unminify the resulting buffer if possible, in order to make it
+actually human-readable. The @var{opener-major-mode-hooks} variable
+allows you to hook functions into specific major-modes that are to be
+executed when the URL is opened via opener. While it is always
+possible to just attach these hooks functions to the major-mode
+anyway, it would waste computing power to do this for normal files.
+
+The variable contains a list of tuples (assoc-list) that maps a
+major-mode to a list of hook-functions that are to be executed in
+order and with the corresponding buffer set as the current-buffer. The
+functions take no arguments.
+
+@lisp
+(defun nxml-pretty-format ()
+  (interactive)
+  (save-excursion
+    (shell-command-on-region (point-min) (point-max) "xmllint --format -" (buffer-name) t)
+    (nxml-mode)
+    (deactivate-mark t)))
+
+(setq-default opener-major-mode-hooks
+  '((nxml-mode (nxml-pretty-format))))
+@end lisp
+
+The example will auto-format and indent the buffer contents of a XML
+file using the @command{xmllint} binary.
+
+@subsection Choose a custom browser
+
+The @var{opener-url-browser-f} variable holds the reference to a
+function that can open a URL with the semantics of a browser. It
+defaults to @code{'browse-url}, which should work in most (if not all)
+cases. However this variable can be customized to either force a
+specific browser, provide an own implementation or to (for example)
+start xwidgets instead. In any case the function is expected to take
+one argument, the URL.
+
+@lisp
+(setq-default opener-url-browser-f
+  'xwidget-webkit-browse-url)
+@end lisp
+
+@section @anchor{What is a classic file-URL?}What is a classic file-URL?
+
+Although not defined like that, there are historically two types of
+used URLs. One is called the @emph{directory}-type and corresponds to
+URLs which path looks like it would correspond to a directory on a
+UNIX filesystem. For example
+
+@example
+@indicateurl{http://example.com/my-directory/is-this-one/} or
+@indicateurl{http://example.com/my-directory}.
+@end example
+
+However there are also URLs which much
+more clearly seem to resemble a file in the path-section of the URL, for example
+
+@example
+@indicateurl{http://example.com/sitemap.xml.gz} or
+@indicateurl{http://example.com/index.html}.
+@end example
+
+We call these file-URLs in this manual, as it pertains to the kind of
+URLs that will be handled by opener.
+

@@ -46,6 +46,14 @@ When opening a buffer that matches one of the modes, the functions are applied
 with the buffer being the current one.  This allows for e.g. pretty-printing."
   :group 'opener)
 
+(defcustom opener-url-browser-f
+  'browse-url
+  "The function to be called in order to invoke a browser. This usually only
+happens in the case of directory-style URLs. Customize this variable to force
+your own browser, to use xwidgets (xwidget-webkit-browse-url) or to provide your
+own implementation. The function takes one argument (the URL)."
+  :group 'opener)
+
 (defun opener-filename-for (url)
   "Convert a URL into a valid file-path.
 Seeing as one might open multiple URL-file buffers, it is useful to distinguish
@@ -107,7 +115,7 @@ CALLBACK gets executed in the not-url case."
   (if (opener-supported-url-scheme-p url-or-file)
     (if (or bang (opener-file-like-url url-or-file))
         (opener-open-url-in-buffer url-or-file)
-      (browse-url url-or-file))
+      (funcall opener-url-browser-f url-or-file))
     (when callback
       (funcall callback url-or-file))))
 

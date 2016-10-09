@@ -106,6 +106,7 @@ It also makes that buffer current."
    (string-prefix-p "http://" url)
    (string-prefix-p "https://" url)))
 
+;;;###autoload
 (defun opener-try-open (url-or-file &optional bang callback)
   "Try to open URL-OR-FILE appropriately.
 This means a file-like URL in a buffer, any other URL in a browser

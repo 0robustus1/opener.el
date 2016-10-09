@@ -1,11 +1,11 @@
 \input texinfo @c -*-texinfo-*-
 @c %**start of header
 @setfilename opener.info
-@settitle opener.el Manual 0.1
+@settitle opener Manual 0.1
 @c %**end of header
 
 @copying
-This manual is for opener.el version 0.1.
+This manual is for opener version 0.1.
 
 Copyright @copyright{} 2016 Tim Reddehase
 
@@ -15,9 +15,9 @@ opener.el package.
 @end quotation
 @end copying
 
-@dircategory Emacs
+@dircategory Emacs lisp libraries
 @direntry
-* opener.el: (opener.el). Seamlessly files via http(s) in buffer.
+* opener: (opener). Seamlessly open files via http(s) in buffer.
 @end direntry
 
 @titlepage
@@ -32,12 +32,10 @@ opener.el package.
 
 @contents
 
-@ifnottex
 @node Top
-@top opener Manual
+@top Top
 
 This manual is for opener.el, version 0.1.
-@end ifnottex
 
 @menu
 * Overview::

@@ -48,10 +48,11 @@ with the buffer being the current one.  This allows for e.g. pretty-printing."
 
 (defcustom opener-url-browser-f
   'browse-url
-  "The function to be called in order to invoke a browser. This usually only
-happens in the case of directory-style URLs. Customize this variable to force
-your own browser, to use xwidgets (xwidget-webkit-browse-url) or to provide your
-own implementation. The function takes one argument (the URL)."
+  "Represents the function to be called in order to invoke a browser.
+This usually only happens in the case of directory-style URLs.  Customize this
+variable to force your own browser, to use xwidgets (xwidget-webkit-browse-url)
+or to provide your own implementation.  The function takes one argument (the
+URL)."
   :group 'opener)
 
 (defun opener-filename-for (url)

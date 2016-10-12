@@ -16,12 +16,12 @@ responses, which are potentially even gzipped (think sitemaps for example).
 
 ** HowTo
 
-Opener hooks into /evil-mode/ and provides an `:opener[!] FILE-OR-URL` ex-state
-command. Use it the same as you would use `:edit[!] FILE`, with the added
+Opener hooks into /evil-mode/ and provides an =:opener[!] FILE-OR-URL= ex-state
+command. Use it the same as you would use =:edit[!] FILE=, with the added
 benefit that you can open urls.
 
-This package also hooks into evil to redefine the `gf` normal-state command. It
-now can perform the same tasks that `:opener` could perform on file or url at
+This package also hooks into evil to redefine the =gf= normal-state command. It
+now can perform the same tasks that =:opener= could perform on file or url at
 point.
 
 For more detailed information please consult the `opener.info` file.

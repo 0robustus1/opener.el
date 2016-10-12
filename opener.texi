@@ -95,6 +95,19 @@ And finally, install opener.el:
 M-x package-install RET opener RET
 @end example
 
+@section Activating evil-mappings
+
+In order to actually have the evil-mappings (meaning the ex-state
+@command{:opener} command and the replacement-@command{gf}
+normal-state command mapping) enabled, you need to call the setup
+function @code{(opener-hook-into-evil)}.
+
+@lisp
+; Example for use-package
+(use-package opener
+  :config (opener-hook-into-evil))
+@end lisp
+
 @node Using opener
 @chapter Using opener
 

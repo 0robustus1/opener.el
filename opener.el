@@ -122,14 +122,6 @@ CALLBACK gets executed in the not-url case."
       (funcall callback url-or-file))))
 
 ;;;###autoload
-(evil-define-command opener-open (url-or-file &optional bang)
-  "Open URL-OR-FILE. If the url doesn't have the scheme http:// or https:// it
-  falls back to be equivalent to :edit"
-  :repeat nil
-  (interactive "<a><!>")
-  (opener-try-open url-or-file bang #'evil-edit))
-
-;;;###autoload
 (defun opener-open-at-point ()
   "Opens URL or FILE at point."
   (interactive)
@@ -137,9 +129,21 @@ CALLBACK gets executed in the not-url case."
     (opener-try-open url nil (lambda (dontcare)
                                (find-file-at-point)))))
 
-(define-key evil-normal-state-map "gf" 'opener-open-at-point)
+;;;###autoload
+(defun opener-hook-into-evil ()
+  "Activates definitions of opener in evil.
+This means the definition of the :opener ex-state command,
+as well as the redefinition of the gf normal-state mapping to
+map to opener instead."
+  (evil-define-command opener-open (url-or-file &optional bang)
+    "Open URL-OR-FILE. If the url doesn't have the scheme http:// or https:// it
+  falls back to be equivalent to :edit"
+    :repeat nil
+    (interactive "<a><!>")
+    (opener-try-open url-or-file bang #'evil-edit))
 
-(evil-ex-define-cmd "o[pener]" 'opener-open)
+  (define-key evil-normal-state-map "gf" 'opener-open-at-point)
+  (evil-ex-define-cmd "o[pener]" 'opener-open))
 
 (provide 'opener)
 ;;; opener.el ends here

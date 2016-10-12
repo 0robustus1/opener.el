@@ -135,7 +135,7 @@ CALLBACK gets executed in the not-url case."
 This means the definition of the :opener ex-state command,
 as well as the redefinition of the gf normal-state mapping to
 map to opener instead."
-  (evil-define-command opener-open (url-or-file &optional bang)
+  (evil-define-command opener-evil-open (url-or-file &optional bang)
     "Open URL-OR-FILE. If the url doesn't have the scheme http:// or https:// it
   falls back to be equivalent to :edit"
     :repeat nil
@@ -143,7 +143,7 @@ map to opener instead."
     (opener-try-open url-or-file bang #'evil-edit))
 
   (define-key evil-normal-state-map "gf" 'opener-open-at-point)
-  (evil-ex-define-cmd "o[pener]" 'opener-open))
+  (evil-ex-define-cmd "o[pener]" 'opener-evil-open))
 
 (provide 'opener)
 ;;; opener.el ends here

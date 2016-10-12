@@ -2,7 +2,7 @@
 
 ;; Author: Tim Reddehase <tr@rightsrestricted.com>
 ;; Version: 0.1
-;; Package-Requires: ((request "20160822.1659") (evil "20160827.1510"))
+;; Package-Requires: ((request "20160822.1659"))
 ;; Keywords: url, http, files
 ;; URL: https://github.com/0robustus1/opener.el
 
@@ -35,7 +35,6 @@
 
 ;;; Code:
 (require 'request)
-(require 'evil)
 (require 'ffap)
 (eval-when-compile (require 'cl)) ;; lexical-let
 
@@ -135,6 +134,7 @@ CALLBACK gets executed in the not-url case."
 This means the definition of the :opener ex-state command,
 as well as the redefinition of the gf normal-state mapping to
 map to opener instead."
+  (require 'evil)
   (evil-define-command opener-evil-open (url-or-file &optional bang)
     "Open URL-OR-FILE. If the url doesn't have the scheme http:// or https:// it
   falls back to be equivalent to :edit"

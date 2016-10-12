@@ -145,6 +145,24 @@ finding the file at point.
 On a side-note: Opener automatically unzips the contents of the buffer
 with @emph{zlib}, if possible.
 
+@section Using opener without evil
+
+The combination of opener with evil is optional, though highly recommended.
+Those who want to use opener without evil should read on.
+
+There are two interactive functions defined, that can be used as replacements
+of the evil-hook-in mappings:
+
+@itemize @bullet
+@item
+@command{opener-open}, will query the user for a URL or FILE to open.
+Provide a universal argument to force the function to open URL in a
+buffer instead of applying file-like-url checking semantics.
+@item
+@command{opener-open-at-point}, opens a URL or file at point. Always applies
+file-like-url checking semantics.
+@end itemize
+
 @section Customizing opener to my needs
 
 Opener defines a small number of variables that can be used to

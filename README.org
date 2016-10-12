@@ -12,7 +12,10 @@ responses, which are potentially even gzipped (think sitemaps for example).
 ** dependencies
 
 - /request/
-- /evil/
+- /evil/, this is an optional dependency.
+  While the package doesn't require it to perform its normal function it is
+  highly recommended to reap the convenience benefits, like ex-state command and
+  remapping of `gf` to open url at point.
 
 ** HowTo
 

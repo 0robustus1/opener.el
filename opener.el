@@ -129,6 +129,16 @@ CALLBACK gets executed in the not-url case."
                                (find-file-at-point)))))
 
 ;;;###autoload
+(defun opener-open (force-buffer)
+  "Open a URL-OR-FILE in buffer, with FORCE-BUFFER it opens URL in a buffer.
+This means that it doesn't perform the file-like-url check to determine whether
+to open url in buffer (= file-like-url t) or in a browser (= file-like-url
+nil)."
+  (interactive "P")
+  (let ((url-or-file (read-string "URL or FILE to open: ")))
+    (opener-try-open url-or-file force-buffer #'find-file)))
+
+;;;###autoload
 (defun opener-hook-into-evil ()
   "Activates definitions of opener in evil.
 This means the definition of the :opener ex-state command,

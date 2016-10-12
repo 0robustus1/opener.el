@@ -139,7 +139,7 @@ nil)."
     (opener-try-open url-or-file force-buffer #'find-file)))
 
 ;;;###autoload
-(defun opener-hook-into-evil ()
+(defmacro opener-hook-into-evil ()
   "Activates definitions of opener in evil.
 This means the definition of the :opener ex-state command,
 as well as the redefinition of the gf normal-state mapping to

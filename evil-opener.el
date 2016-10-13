@@ -69,7 +69,7 @@
   (interactive "<a><!>")
   (opener-try-open url-or-file bang #'evil-edit))
 
-(evil-define-key 'normal evil-opener-map "gf" 'opener-open-at-point)
+(evil-define-key 'normal evil-opener-mode-map "gf" 'opener-open-at-point)
 (evil-ex-define-cmd "o[pener]" 'opener-evil-open)
 
 (provide 'evil-opener)

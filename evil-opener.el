@@ -72,3 +72,5 @@
 (evil-define-key 'normal evil-opener-map "gf" 'opener-open-at-point)
 (evil-ex-define-cmd "o[pener]" 'opener-evil-open)
 
+(provide 'evil-opener)
+;;; evil-opener.el ends here

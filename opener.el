@@ -38,6 +38,10 @@
 (require 'ffap)
 (eval-when-compile (require 'cl)) ;; lexical-let
 
+(defgroup opener nil
+  "opening urls as buffers"
+  :group 'convenience)
+
 (defcustom opener-major-mode-hooks
   '()
   "List of 'major-mode' to list of functions to be executed.

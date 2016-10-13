@@ -39,7 +39,7 @@
 (eval-when-compile (require 'cl)) ;; lexical-let
 
 (defcustom opener-major-mode-hooks
-  '((nxml-mode (nxml-pretty-format)))
+  '()
   "List of 'major-mode' to list of functions to be executed.
 When opening a buffer that matches one of the modes, the functions are applied
 with the buffer being the current one.  This allows for e.g. pretty-printing."

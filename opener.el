@@ -138,23 +138,5 @@ nil)."
   (let ((url-or-file (read-string "URL or FILE to open: ")))
     (opener-try-open url-or-file force-buffer #'find-file)))
 
-(with-eval-after-load "evil"
-;;;###autoload
-  (defun opener-hook-into-evil ()
-    "Activates definitions of opener in evil.
-This means the definition of the :opener ex-state command,
-as well as the redefinition of the gf normal-state mapping to
-map to opener instead."
-    (require 'evil)
-    (evil-define-command opener-evil-open (url-or-file &optional bang)
-      "Open URL-OR-FILE. If the url doesn't have the scheme http:// or https:// it
-  falls back to be equivalent to :edit"
-      :repeat nil
-      (interactive "<a><!>")
-      (opener-try-open url-or-file bang #'evil-edit))
-
-    (define-key evil-normal-state-map "gf" 'opener-open-at-point)
-    (evil-ex-define-cmd "o[pener]" 'opener-evil-open)))
-
 (provide 'opener)
 ;;; opener.el ends here

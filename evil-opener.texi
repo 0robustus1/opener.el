@@ -1,0 +1,164 @@
+\input texinfo @c -*-texinfo-*-
+@c %**start of header
+@setfilename evil-opener.info
+@settitle evil-opener Manual 0.2
+@c %**end of header
+
+@copying
+This manual is for evil-opener version 0.2.
+
+Copyright @copyright{} 2016 Tim Reddehase
+
+@quotation
+All rights reserved. This manual must accompany the source code of the
+evil-opener.el package.
+@end quotation
+@end copying
+
+@dircategory Emacs lisp libraries
+@direntry
+* evil-opener: (evil-opener). Seamlessly open files via http(s) in buffer, in evil.
+@end direntry
+
+@titlepage
+@title evil-opener.el Manual
+@author Tim Reddehase
+
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+
+@end titlepage
+
+@contents
+
+@node Top
+@top Top
+
+This manual is for evil-opener.el, version 0.2.
+
+@menu
+* Overview::
+* Installing::
+* Using evil-opener::
+@end menu
+
+@node Overview
+@chapter Overview
+
+Opener is a small package that hooks into @emph{evil} and makes it
+possible to open URLs directly in a buffer, instead of going the way
+of downloading the corresponding file with your browser and then
+opening that file manually. Users of @emph{vim} (which you most likely
+were, since you are using @emph{evil}) might be familar that behaviour
+already, since it is built into @emph{vim}.
+
+However opener doesn't just open any URL in buffer, only those that it
+determines correspond to a classic file. The simple reason for that
+is, that normal webpages aren't really intended to be read via
+source-code. Therefore those URLs are still opened in your favorite
+browser. For information on how to customize the workflow and how to
+force it to open in a buffer, see @ref{Using evil-opener}.
+
+This package is a wrapper-package to provide evil-specific
+funtionality to opener.
+
+@node Installing
+@chapter Installing
+
+It is recommended to install opener.el via the MELPA package
+repository. However, it is still (as always) possible to do it by
+hand:
+
+To manually install opener.el, clone the git repository it into a
+location of your choice (usually within your @code{~/.emacs.d}) and
+add that location to your @code{load-path}.
+
+@section Installing from MELPA
+
+Follow these steps to install Octopress.el from the MELPA repository.
+
+@lisp
+(require 'package)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.org/packages/") t)
+@end lisp
+
+@noindent
+Then refresh your packages list:
+
+@example
+M-x package-refresh-contents RET
+@end example
+
+@noindent
+And finally, install evil-opener.el:
+
+@example
+M-x package-install RET evil-opener RET
+@end example
+
+@section Activating evil-mappings
+
+The command is defined by default. Meaning that @command{:opener} should
+be available when the package was loaded.
+
+As however the @command{gf} mapping is overriden by this package, one needs
+to opt in by activating the minor mode. This can be done
+by calling @code{(global-evil-opener-mode)}.
+
+@lisp
+; Example for use-package
+(use-package evil-opener
+  :config (global-evil-opener-mode))
+@end lisp
+
+@node Using evil-opener
+@chapter Using evil-opener
+
+Evil-opener automatically hooks into @emph{evil-mode} and provides the
+@command{:opener} ex-state command. It basically acts the same way
+as the standard @emph{evil-mode} @command{:edit} ex-state command;
+meaning that it takes a @var{file} or (in this special case) a
+@var{URL} as argument. If you provide a normal path to a file, even if
+it is a @emph{TRAMP} specified path, it is opened the same way as you
+would expect it from the @command{:edit} command.
+
+If the argument however pertains to a URL in the http or https scheme,
+it will either open the corresponding HTTP-response in a buffer, if
+that URL seems to be corresponding to a classic file (for information
+about that see the corresponding section in the @emph{opener} manual).
+Otherwise it will open up a browser at that URL.
+
+Same as the standard @command{:edit} command the @command{:opener}
+command also accepts a bang. If @command{:opener!} gets executed the
+argument, if it is a URL in http or https scheme, is always opened in
+a buffer, no matter if it is a directory- or file-like URL. If it
+however is a FILE, the bang gets propagated to the underlying
+@command{:edit} command.
+
+
+While the @command{:opener} command doesn't override the normal
+@command{:edit} command — meaning that one still performs its normal
+operations — opener overrides another command: @command{gf} in
+normal-state. @command{gf} is usually seen as a mnemonic for @emph{go
+to file} and opens the filepath at point. However opener seamlessly
+hooks into that and allows you to open file-like URLs in a buffer as
+well, in any other URL-case it tries to open the URL at point in a
+browser and in any other case falls back to the default behaviour of
+finding the file at point.
+
+On a side-note: Opener automatically unzips the contents of the buffer
+with @emph{zlib}, if possible.
+
+@section Using opener without evil
+
+Just requiring the @emph{opener} package instead of
+the @emph{evil-opener} package should do the trick.
+For the provided commands see the documentation of the
+@emph{opener} package.
+
+@section Customizing opener to my needs
+
+For information of how to configure @emph{opener} see the original
+@emph{opener}-package documentation.

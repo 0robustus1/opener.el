@@ -1,11 +1,11 @@
 \input texinfo @c -*-texinfo-*-
 @c %**start of header
 @setfilename opener.info
-@settitle opener Manual 0.1
+@settitle opener Manual 0.2
 @c %**end of header
 
 @copying
-This manual is for opener version 0.1.
+This manual is for opener version 0.2.
 
 Copyright @copyright{} 2016 Tim Reddehase
 
@@ -35,7 +35,7 @@ opener.el package.
 @node Top
 @top Top
 
-This manual is for opener.el, version 0.1.
+This manual is for opener.el, version 0.2.
 
 @menu
 * Overview::
@@ -46,12 +46,11 @@ This manual is for opener.el, version 0.1.
 @node Overview
 @chapter Overview
 
-Opener is a small package that hooks into @emph{evil} and makes it
-possible to open URLs directly in a buffer, instead of going the way
-of downloading the corresponding file with your browser and then
-opening that file manually. Users of @emph{vim} (which you most likely
-were, since you are using @emph{evil}) might be familar that behaviour
-already, since it is built into @emph{vim}.
+Opener is a small package that makes it possible to open URLs directly
+in a buffer, instead of going the way of downloading the corresponding
+file with your browser and then opening that file manually. Users of
+@emph{vim} might be familar that behaviour already, since it is built
+into @emph{vim}.
 
 However opener doesn't just open any URL in buffer, only those that it
 determines correspond to a classic file. The simple reason for that
@@ -95,42 +94,25 @@ And finally, install opener.el:
 M-x package-install RET opener RET
 @end example
 
+@section Activating evil-mappings
+
+You'll need to require the @emph{evil-opener} package instead.
+
 @node Using opener
 @chapter Using opener
 
-Opener automatically hooks into @emph{evil-mode} and provides the
-@command{:opener} ex-state command. It basically acts the same way
-as the standard @emph{evil-mode} @command{:edit} ex-state command;
-meaning that it takes a @var{file} or (in this special case) a
-@var{URL} as argument. If you provide a normal path to a file, even if
-it is a @emph{TRAMP} specified path, it is opened the same way as you
-would expect it from the @command{:edit} command.
+@emph{Info:} The combination of opener with evil is optional, though
+highly recommended.
 
-If the argument however pertains to a URL in the http or https scheme,
-it will either open the corresponding HTTP-response in a buffer, if
-that URL seems to be corresponding to a classic file (@pxref{What is a classic file-URL?}).
-Otherwise it will open up a browser at that URL.
-
-Same as the standard @command{:edit} command the @command{:opener}
-command also accepts a bang. If @command{:opener!} gets executed the
-argument, if it is a URL in http or https scheme, is always opened in
-a buffer, no matter if it is a directory- or file-like URL. If it
-however is a FILE, the bang gets propagated to the underlying
-@command{:edit} command.
-
-
-While the @command{:opener} command doesn't override the normal
-@command{:edit} command — meaning that one still performs its normal
-operations — opener overrides another command: @command{gf} in
-normal-state. @command{gf} is usually seen as a mnemonic for @emph{go
-to file} and opens the filepath at point. However opener seamlessly
-hooks into that and allows you to open file-like URLs in a buffer as
-well, in any other URL-case it tries to open the URL at point in a
-browser and in any other case falls back to the default behaviour of
-finding the file at point.
-
-On a side-note: Opener automatically unzips the contents of the buffer
-with @emph{zlib}, if possible.
+@itemize @bullet
+@item
+@command{opener-open}, will query the user for a URL or FILE to open.
+Provide a universal argument to force the function to open URL in a
+buffer instead of applying file-like-url checking semantics.
+@item
+@command{opener-open-at-point}, opens a URL or file at point. Always applies
+file-like-url checking semantics.
+@end itemize
 
 @section Customizing opener to my needs
 

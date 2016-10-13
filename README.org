@@ -1,28 +1,31 @@
 * opener.el — open urls as buffers
+  opener.el is a small package that provides the user with the ability to open
+  files from http-like sources directly inside an Emacs buffer.  This means that
+  if the URL in question gives string hints to be a plaintext file, that isn't
+  automatically being rendered into a pleasant representation, like for example
+  html files are, it will be opened inside an Emacs buffer.
 
-opener.el is a small package that provides the user with the ability to open
-files from http-like sources directly inside an Emacs buffer.  This means that
-if the URL in question gives string hints to be a plaintext file, that isn't
-automatically being rendered into a pleasant representation, like for example
-html files are, it will be opened inside an Emacs buffer.
-
-The current main example for this is opening URLs that yield XML or JSON
-responses, which are potentially even gzipped (think sitemaps for example).
+  The current main example for this is opening URLs that yield XML or JSON
+  responses, which are potentially even gzipped (think sitemaps for example).
 
 ** dependencies
-
-- /request/
-- /evil/
+   - for /opener/:
+     - /request/
+   - additionally for /evil-opener/:
+     - /evil/
 
 ** HowTo
+   evil-opener hooks into /evil-mode/ and provides an =:opener[!] FILE-OR-URL= ex-state
+   command. Use it the same as you would use =:edit[!] FILE=, with the added
+   benefit that you can open urls.
 
-Opener hooks into /evil-mode/ and provides an `:opener[!] FILE-OR-URL` ex-state
-command. Use it the same as you would use `:edit[!] FILE`, with the added
-benefit that you can open urls.
+   This package also hooks into evil to redefine the =gf= normal-state command. It
+   now can perform the same tasks that =:opener= could perform on file or url at
+   point.
 
-This package also hooks into evil to redefine the `gf` normal-state command. It
-now can perform the same tasks that `:opener` could perform on file or url at
-point.
+   For more detailed information please consult the =evil-opener.info= file.
 
-For more detailed information please consult the `opener.info` file.
+   Opener can also be used without /evil/. To do that require the /opener/ package
+   instead of the /evil-opener/ package. More information can be found in the
+   =opener.info= file.
 

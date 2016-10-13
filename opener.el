@@ -2,7 +2,7 @@
 
 ;; Author: Tim Reddehase <tr@rightsrestricted.com>
 ;; Version: 0.1
-;; Package-Requires: ((request "20160822.1659") (evil "20160827.1510"))
+;; Package-Requires: ((request "20160822.1659"))
 ;; Keywords: url, http, files
 ;; URL: https://github.com/0robustus1/opener.el
 
@@ -35,12 +35,11 @@
 
 ;;; Code:
 (require 'request)
-(require 'evil)
 (require 'ffap)
 (eval-when-compile (require 'cl)) ;; lexical-let
 
 (defcustom opener-major-mode-hooks
-  '((nxml-mode (nxml-pretty-format)))
+  '()
   "List of 'major-mode' to list of functions to be executed.
 When opening a buffer that matches one of the modes, the functions are applied
 with the buffer being the current one.  This allows for e.g. pretty-printing."
@@ -122,14 +121,6 @@ CALLBACK gets executed in the not-url case."
       (funcall callback url-or-file))))
 
 ;;;###autoload
-(evil-define-command opener-open (url-or-file &optional bang)
-  "Open URL-OR-FILE. If the url doesn't have the scheme http:// or https:// it
-  falls back to be equivalent to :edit"
-  :repeat nil
-  (interactive "<a><!>")
-  (opener-try-open url-or-file bang #'evil-edit))
-
-;;;###autoload
 (defun opener-open-at-point ()
   "Opens URL or FILE at point."
   (interactive)
@@ -137,9 +128,15 @@ CALLBACK gets executed in the not-url case."
     (opener-try-open url nil (lambda (dontcare)
                                (find-file-at-point)))))
 
-(define-key evil-normal-state-map "gf" 'opener-open-at-point)
-
-(evil-ex-define-cmd "o[pener]" 'opener-open)
+;;;###autoload
+(defun opener-open (force-buffer)
+  "Open a URL-OR-FILE in buffer, with FORCE-BUFFER it opens URL in a buffer.
+This means that it doesn't perform the file-like-url check to determine whether
+to open url in buffer (= file-like-url t) or in a browser (= file-like-url
+nil)."
+  (interactive "P")
+  (let ((url-or-file (read-string "URL or FILE to open: ")))
+    (opener-try-open url-or-file force-buffer #'find-file)))
 
 (provide 'opener)
 ;;; opener.el ends here

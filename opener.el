@@ -38,12 +38,17 @@
 (require 'ffap)
 (eval-when-compile (require 'cl)) ;; lexical-let
 
+(defgroup opener nil
+  "opening urls as buffers"
+  :group 'convenience)
+
 (defcustom opener-major-mode-hooks
   '()
   "List of 'major-mode' to list of functions to be executed.
 When opening a buffer that matches one of the modes, the functions are applied
 with the buffer being the current one.  This allows for e.g. pretty-printing."
-  :group 'opener)
+  :group 'opener
+  :type '(repeat function))
 
 (defcustom opener-url-browser-f
   'browse-url
@@ -52,7 +57,8 @@ This usually only happens in the case of directory-style URLs.  Customize this
 variable to force your own browser, to use xwidgets (xwidget-webkit-browse-url)
 or to provide your own implementation.  The function takes one argument (the
 URL)."
-  :group 'opener)
+  :group 'opener
+  :type 'function)
 
 (defun opener-filename-for (url)
   "Convert a URL into a valid file-path.

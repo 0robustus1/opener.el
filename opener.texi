@@ -153,8 +153,8 @@ file using the @command{xmllint} binary.
 
 @subsection Choose a custom browser
 
-The @var{opener-url-browser-f} variable holds the reference to a
-function that can open a URL with the semantics of a browser. It
+The @var{opener-url-browser-function} variable holds the reference to
+a function that can open a URL with the semantics of a browser. It
 defaults to @code{'browse-url}, which should work in most (if not all)
 cases. However this variable can be customized to either force a
 specific browser, provide an own implementation or to (for example)
@@ -162,7 +162,7 @@ start xwidgets instead. In any case the function is expected to take
 one argument, the URL.
 
 @lisp
-(setq-default opener-url-browser-f
+(setq-default opener-url-browser-function
   'xwidget-webkit-browse-url)
 @end lisp
 

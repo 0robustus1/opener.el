@@ -50,7 +50,7 @@ with the buffer being the current one.  This allows for e.g. pretty-printing."
   :group 'opener
   :type '(repeat function))
 
-(defcustom opener-url-browser-f
+(defcustom opener-url-browser-function
   'browse-url
   "Represents the function to be called in order to invoke a browser.
 This usually only happens in the case of directory-style URLs.  Customize this
@@ -122,7 +122,7 @@ CALLBACK gets executed in the not-url case."
   (if (opener-supported-url-scheme-p url-or-file)
     (if (or bang (opener-file-like-url url-or-file))
         (opener-open-url-in-buffer url-or-file)
-      (funcall opener-url-browser-f url-or-file))
+      (funcall opener-url-browser-function url-or-file))
     (when callback
       (funcall callback url-or-file))))
 

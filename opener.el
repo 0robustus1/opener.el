@@ -131,7 +131,7 @@ CALLBACK gets executed in the not-url case."
   "Opens URL or FILE at point."
   (interactive)
   (let ((url (ffap-url-at-point)))
-    (opener-try-open url nil (lambda (dontcare)
+    (opener-try-open url nil (lambda (_)
                                (find-file-at-point)))))
 
 ;;;###autoload

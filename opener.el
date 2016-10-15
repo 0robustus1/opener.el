@@ -135,14 +135,13 @@ CALLBACK gets executed in the not-url case."
                                (find-file-at-point)))))
 
 ;;;###autoload
-(defun opener-open (force-buffer)
+(defun opener-open (url-or-file force-buffer)
   "Open a URL-OR-FILE in buffer, with FORCE-BUFFER it opens URL in a buffer.
 This means that it doesn't perform the file-like-url check to determine whether
 to open url in buffer (= file-like-url t) or in a browser (= file-like-url
 nil)."
-  (interactive "P")
-  (let ((url-or-file (read-string "URL or FILE to open: ")))
-    (opener-try-open url-or-file force-buffer #'find-file)))
+  (interactive "sURL or FILE to open: \nP")
+  (opener-try-open url-or-file force-buffer #'find-file))
 
 (provide 'opener)
 ;;; opener.el ends here

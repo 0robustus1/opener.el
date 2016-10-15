@@ -1,8 +1,8 @@
-;;; opener.el --- opening urls as buffers
+;;; opener.el --- opening urls as buffers -*- lexical-binding: t; -*-
 
 ;; Author: Tim Reddehase <tr@rightsrestricted.com>
 ;; Version: 0.1
-;; Package-Requires: ((request "20160822.1659"))
+;; Package-Requires: ((request "20160822.1659") (emacs "24"))
 ;; Keywords: url, http, files
 ;; URL: https://github.com/0robustus1/opener.el
 
@@ -36,7 +36,7 @@
 ;;; Code:
 (require 'request)
 (require 'ffap)
-(eval-when-compile (require 'cl)) ;; lexical-let
+(require 'cl-lib)
 
 (defgroup opener nil
   "opening urls as buffers"
@@ -101,7 +101,7 @@ It also makes that buffer current."
   (request
    url
    :parser 'buffer-string
-   :complete (lexical-let ((buffer-name (opener-filename-for url)))
+   :complete (let ((buffer-name (opener-filename-for url)))
                (function*
                 (lambda (&key data &allow-other-keys)
                   (opener-http-response-in-buffer buffer-name data))))))

@@ -113,14 +113,14 @@ It also makes that buffer current."
    (string-prefix-p "https://" url)))
 
 ;;;###autoload
-(defun opener-try-open (url-or-file &optional bang callback)
+(defun opener-try-open (url-or-file &optional force-buffer callback)
   "Try to open URL-OR-FILE appropriately.
 This means a file-like URL in a buffer, any other URL in a browser
 and a FILE as a normal file.
-When BANG non-nil, then actual URL is always opened in buffer.
+When FORCE-BUFFER non-nil, then actual URL is always opened in buffer.
 CALLBACK gets executed in the not-url case."
   (if (opener-supported-url-scheme-p url-or-file)
-    (if (or bang (opener-file-like-url url-or-file))
+    (if (or force-buffer (opener-file-like-url url-or-file))
         (opener-open-url-in-buffer url-or-file)
       (funcall opener-url-browser-function url-or-file))
     (when callback

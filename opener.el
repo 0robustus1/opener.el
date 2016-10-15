@@ -69,7 +69,7 @@ them by more than their base-name"
 (defun opener-file-like-url (url)
   "Report whether the URL seems like it corresponds to a normal file."
   (let ((file-segment (car (last (split-string url "/")))))
-    (string-match-p (regexp-quote ".") file-segment)))
+    (file-name-extension file-segment)))
 
 (defun opener-perform-major-mode-hooks ()
   "Perform necessary hooks for the determined file-mode.

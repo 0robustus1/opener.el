@@ -2,7 +2,7 @@
 
 ;; Author: Tim Reddehase <tr@rightsrestricted.com>
 ;; Version: 0.1
-;; Package-Requires: ((request "20160822.1659") (emacs "24"))
+;; Package-Requires: ((request "20160822.1659") (emacs "24") (cl-lib "0.5"))
 ;; Keywords: url, http, files
 ;; URL: https://github.com/0robustus1/opener.el
 

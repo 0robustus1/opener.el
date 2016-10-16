@@ -48,18 +48,8 @@
   (evil-normalize-keymaps))
 
 ;;;###autoload
-(defun turn-on-evil-opener-mode ()
-  "Enable evil-opener-mode in the current buffer."
-  (evil-opener-mode 1))
-
-;;;###autoload
-(defun turn-off-evil-opener-mode ()
-  "Disable evil-opener-mode in the current buffer."
-  (evil-opener-mode -1))
-
-;;;###autoload
 (define-globalized-minor-mode global-evil-opener-mode
-  evil-opener-mode turn-on-evil-opener-mode
+  evil-opener-mode (lambda () (evil-opener-mode 1))
   "Global minor mode to activate evil-opener remappings.")
 
 (evil-define-command opener-evil-open (url-or-file &optional bang)

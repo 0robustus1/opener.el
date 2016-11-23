@@ -92,7 +92,7 @@ It also makes that buffer current."
         (if enable-multibyte-characters (toggle-enable-multibyte-characters))
         (insert data)
         (zlib-decompress-region (point-min) (point-max))
-        (normal-mode)
+        (let ((buffer-file-name buffer-name)) (normal-mode))
         (opener-perform-major-mode-hooks)))
     (switch-to-buffer buffer)))
 

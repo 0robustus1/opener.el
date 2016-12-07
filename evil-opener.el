@@ -1,8 +1,8 @@
 ;;; evil-opener.el --- opening urls as buffers in evil
 
 ;; Author: Tim Reddehase <tr@rightsrestricted.com>
-;; Version: 0.2.1
-;; Package-Requires: ((evil "1.2.12") (opener "0.2.1"))
+;; Version: 0.2.2
+;; Package-Requires: ((evil "1.2.12") (opener "0.2.2"))
 ;; Keywords: url, http, files
 ;; URL: https://github.com/0robustus1/opener.el
 

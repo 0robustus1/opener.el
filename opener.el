@@ -1,7 +1,7 @@
 ;;; opener.el --- opening urls as buffers -*- lexical-binding: t; -*-
 
 ;; Author: Tim Reddehase <tr@rightsrestricted.com>
-;; Version: 0.2.1
+;; Version: 0.2.2
 ;; Package-Requires: ((request "0.2.0") (emacs "24") (cl-lib "0.5"))
 ;; Keywords: url, http, files
 ;; URL: https://github.com/0robustus1/opener.el

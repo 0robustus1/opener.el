@@ -1,7 +1,7 @@
 * opener.el — open urls as buffers
 
   - opener: [[https://melpa.org/#/opener][file:https://melpa.org/packages/opener-badge.svg]]
-  - evil-opener: /unreleased/
+  - evil-opener: /[[https://melpa.org/#/evil-opener][file:https://melpa.org/packages/evil-opener-badge.svg]]/
 
   opener.el is a small package that provides the user with the ability to open
   files from http-like sources directly inside an Emacs buffer.  This means that
